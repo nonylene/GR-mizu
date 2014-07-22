@@ -9,9 +9,9 @@ byte ip[] = {192,168,220,133};
 TEthernet Ethernet;
 EthernetServer server(80);
 
-void setup()
-{
+void setup(){
     Ethernet.begin(mac,ip);
+    //これつけると落ちなくなった。）
     while (Ethernet.localIP() == "0.0.0.0"){
         Ethernet.begin(mac,ip);
     }
@@ -19,7 +19,7 @@ void setup()
     Serial.begin(9600);
 }
 
-void returnHTML(EthernetClient& client,char value[]) {
+void returnHTML(EthernetClient& client,char value[]){
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type:text/html; charset=UTF-8");
   client.println();
@@ -28,17 +28,16 @@ void returnHTML(EthernetClient& client,char value[]) {
   client.println("<head>");
   client.println("<title>GR-SAKURA 水まき</title>");
   client.println( value );
-  client.println("<form method=POST>");
-  client.println("<input type=submit name=1 value=みずをまく  /><br />");
+  client.println("<form method=GET>");
+  client.println("<input type=submit name=m value=GO /><br />");
   client.println("</form>");
   client.println("</body>");
   client.println("</html>");
 }
 
-void ethernet(EthernetClient& client)
-{
+void ethernet(EthernetClient& client){
     if(client){
-        Serial.println("client");
+        Serial.println("Client Connected");
         //Serial.println("ethernet");
         if (!client.connected()){
             Serial.println("it not works");
@@ -68,8 +67,42 @@ void ethernet(EthernetClient& client)
                 Ethernet.processPackets();
             }
             client.read();
-            for (int i = 0; i <line.size();i++){
+            //ここで読み取りが終わり。
+            for (int i = 0; i < line.size();i++){
                 Serial.print(line[i]);
+            }
+            //検索とかはstringにすると使いやすそう
+            std::string lines(line.begin(),line.end());
+            //paramの検索
+            std::string param;
+            int a = lines.find("?");
+            int b = lines.find("HTTP");
+            if (a != std::string::npos && b != std::string::npos){
+                param = lines.substr(a+1,b-a-2);
+            }
+            Serial.println();
+            if (param != ""){
+                Serial.print("params: ");
+                for (int i = 0; i < param.size();i++){
+                    Serial.print(param[i]);
+                }
+                Serial.println();
+                //paramを分析する
+                int m_s = param.find("m=");
+                if (m_s != std::string::npos){
+                    int m_e = param.find("&",m_s);
+                    Serial.print("m: ");
+                    if (m_e != std::string::npos){
+                        for (int i = m_s; i < m_e; i++){
+                            Serial.print(param[i]);
+                        }
+                    }else{
+                        for (int i = m_s; i < param.size(); i++){
+                            Serial.print(param[i]);
+                        }
+                    }
+                    Serial.println();
+                }
             }
             if (line.size() == 0){
                 isend = false;
@@ -96,7 +129,6 @@ void ethernet(EthernetClient& client)
 
 void loop(){
     EthernetClient client = server.available();
-    Serial.println(Ethernet.localIP());
     //if (client){
         ethernet(client);
         client.stop();
