@@ -88,17 +88,22 @@ void ethernet(EthernetClient& client){
                 }
                 Serial.println();
                 //paramを分析する
+                
+                // mの分析
+                std::string m;
                 int m_s = param.find("m=");
                 if (m_s != std::string::npos){
                     int m_e = param.find("&",m_s);
                     Serial.print("m: ");
                     if (m_e != std::string::npos){
-                        for (int i = m_s; i < m_e; i++){
-                            Serial.print(param[i]);
+                        m = param.substr(m_s+2,m_e - m_s-2);
+                        for (int i = 0; i < m.size(); i++){
+                            Serial.print(m[i]);
                         }
                     }else{
-                        for (int i = m_s; i < param.size(); i++){
-                            Serial.print(param[i]);
+                        m = param.substr(m_s+2);
+                        for (int i = 0; i < m.size(); i++){
+                            Serial.print(m[i]);
                         }
                     }
                     Serial.println();
