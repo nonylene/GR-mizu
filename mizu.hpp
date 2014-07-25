@@ -1,19 +1,8 @@
 /*GR-SAKURA Sketch Template Version: V1.08*/
 #include <rxduino.h>
 
-void setup()
+void set()
 {
-    pinMode(8,OUTPUT);
-    digitalWrite(8, HIGH);
-    //output Vcc
-    pinMode(0,OUTPUT);
-    pinMode(1,OUTPUT);
-}
-
-
-void loop()
-{
-    Client client = server.available();
     //角度の読みとり
     int a = analogRead(0);
     int b = analogRead(1);
