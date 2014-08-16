@@ -8,13 +8,9 @@ byte mac[] = {0x00,0x16,0x3e,0x4e,0x8a,0x6c};
 byte ip[] = {192,168,220,133};
 TEthernet Ethernet;
 EthernetServer server(80);
+std::string m;
 
 void setup(){
-    pinMode(8,OUTPUT);
-    digitalWrite(8, HIGH);
-    //output Vcc
-    pinMode(0,OUTPUT);
-    pinMode(1,OUTPUT);
     Ethernet.begin(mac,ip);
     //これつけると落ちなくなった。）
     while (Ethernet.localIP() == "0.0.0.0"){
@@ -131,11 +127,14 @@ void ethernet(EthernetClient& client){
 
 
 void loop(){
-    std::string m;
+    m = "";
     EthernetClient client = server.available();
     ethernet(client);
     if (m == "GO"){
-        mizu::set()
+        setuph();
+        while (1){
+        set();
+        }
     }
     client.stop();
 }
