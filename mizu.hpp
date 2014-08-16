@@ -34,14 +34,12 @@ void up(){
     //upup
     digitalWrite(8, HIGH);
     digitalWrite(9, LOW);
-    analogWrite(8,200);
 }
 
 void down(){
     //down
     digitalWrite(8, LOW);
     digitalWrite(9, HIGH);
-    analogWrite(9,200);
 }
 
 void stopr(){
@@ -101,4 +99,5 @@ void set()
             down();
         }
     }
+    delay(10); 
 }

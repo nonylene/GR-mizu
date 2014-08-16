@@ -9,6 +9,7 @@ void returnHTML(EthernetClient& client,char value[]){
     client.println("<html>");
     client.println("<head>");
     client.println("<title>GR-SAKURA</title>");
+    client.println("</head>");
     client.println("多重アクセスで落ちるので丁寧に扱ってください<br/>");
     client.println("message:");
     client.println( value );
@@ -18,10 +19,12 @@ void returnHTML(EthernetClient& client,char value[]){
     client.println("-----manage-----<br/>");
     client.println("<form method=GET>");
     client.println("<input type=submit name=m value=UP />");
+    client.println("</form>");
     client.println("<form method=GET>");
     client.println("<input type=submit name=m value=DOWN />");
+    client.println("</form>");
     client.println("<form method=GET>");
-    client.println("<input type=submit name=m value=STOP /><br />");
+    client.println("<input type=submit name=m value=STOP />");
     client.println("</form>");
     client.println("</body>");
     client.println("</html>");
