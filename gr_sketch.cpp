@@ -21,19 +21,27 @@ void setup(){
 }
 
 void returnHTML(EthernetClient& client,char value[]){
-  client.println("HTTP/1.1 200 OK");
-  client.println("Content-Type:text/html; charset=UTF-8");
-  client.println();
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");
-  client.println("<head>");
-  client.println("<title>GR-SAKURA 水まき</title>");
-  client.println( value );
-  client.println("<form method=GET>");
-  client.println("<input type=submit name=m value=GO /><br />");
-  client.println("</form>");
-  client.println("</body>");
-  client.println("</html>");
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type:text/html; charset=UTF-8");
+    client.println();
+    client.println("<!DOCTYPE HTML>");
+    client.println("<html>");
+    client.println("<head>");
+    client.println("<title>GR-SAKURA 水まき</title>");
+    client.println("message:");
+    client.println( value );
+    client.println("<form method=GET>");
+    client.println("<input type=submit name=m value=GO /><br />");
+    client.println("-----manage-----<br/>");
+    client.println("<form method=GET>");
+    client.println("<input type=submit name=m value=UP /><br />");
+    client.println("<form method=GET>");
+    client.println("<input type=submit name=m value=DOWN /><br />");
+    client.println("<form method=GET>");
+    client.println("<input type=submit name=m value=STOP /><br />");
+    client.println("</form>");
+    client.println("</body>");
+    client.println("</html>");
 }
 
 void ethernet(EthernetClient& client){
@@ -133,8 +141,32 @@ void loop(){
     if (m == "GO"){
         setuph();
         while (1){
-        set();
+            set();
         }
+        returnHTML(client,"たぶん水をまきました");
+    }else if(m == "DOWN"){
+        setuph();
+        offu();
+        delay(50);
+        
+        down();
+        delay(1000);
+        offu();
+        returnHTML(client,"俯角を下げました");
+    }else if(m == "UP"){
+        setuph();
+        offu();
+        delay(50);
+        
+        up();
+        delay(1000);
+        offu();
+        returnHTML(client,"俯角をageました");
+    }else if(m == "STOP"){
+        offu();
+        offr();
+        returnHTML(client,"とめました");
     }
-    client.stop();
+
+        client.stop();
 }
