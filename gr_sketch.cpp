@@ -20,67 +20,67 @@ void setup(){
         Ethernet.begin(mac,ip);
     }
     server.begin();
-    //Serial.begin(9600);
+    Serial.begin(9600);
 }
 
 void para(std::string& param){
     //URLにparamがあった時の処理
-    //Serial.print("params: ");
+    Serial.print("params: ");
     for (int i = 0; i < param.size();i++){
-        //Serial.print(param[i]);
+        Serial.print(param[i]);
     }
-    //Serial.println();
+    Serial.println();
 
     //paramを分析する
     // mの分析
     int m_s = param.find("m=");
     if (m_s != std::string::npos){
         int m_e = param.find("&",m_s);
-        //Serial.print("m: ");
+        Serial.print("m: ");
         //最後に&があるかどうかで処理が別れる
         if (m_e != std::string::npos){
             m = param.substr(m_s+2,m_e - m_s-2);
             //printしているだけ
             for (int i = 0; i < m.size(); i++){
-                //Serial.print(m[i]);
+                Serial.print(m[i]);
             }
         }else{
             //&がなかった場合
             m = param.substr(m_s+2);
             for (int i = 0; i < m.size(); i++){
-                //Serial.print(m[i]);
+                Serial.print(m[i]);
             }
         }
-        //Serial.println();
+        Serial.println();
     }
     // uの分析
     int u_s = param.find("u=");
     if (u_s != std::string::npos){
         int u_e = param.find("&",u_s);
-        //Serial.print("u: ");
+        Serial.print("u: ");
         //最後に&があるかどうかで処理が別れる
         if (u_e != std::string::npos){
             u = param.substr(u_s+2,u_e - u_s-2);
             //printしているだけ
             for (int i = 0; i < u.size(); i++){
-                //Serial.print(u[i]);
+                Serial.print(u[i]);
             }
         }else{
             //&がなかった場合
             u = param.substr(u_s+2);
             for (int i = 0; i < u.size(); i++){
-                //Serial.print(u[i]);
+                Serial.print(u[i]);
             }
         }
-        //Serial.println();
+        Serial.println();
     }
 }
 
 void ethernet(EthernetClient& client){
     if(client){
-        //Serial.println("Client Connected");
+        Serial.println("Client Connected");
         if (!client.connected()){
-            //Serial.println("client not connected");
+            Serial.println("client not connected");
             return;
         }
         bool isend = true;
@@ -109,9 +109,9 @@ void ethernet(EthernetClient& client){
             client.read();
             //ここで読み取りが終わり。→表示
             for (int i = 0; i < line.size();i++){
-                //Serial.print(line[i]);
+                Serial.print(line[i]);
             }
-            //Serial.println();
+            Serial.println();
 
             //検索とかはstringで行う
             std::string lines(line.begin(),line.end());
