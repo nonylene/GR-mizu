@@ -13,7 +13,12 @@ void setuph()
     //output Vcc
     pinMode(8,OUTPUT);
     pinMode(9,OUTPUT);
-    Serial.begin(9600);
+    
+    pinMode(6,OUTPUT);
+    digitalWrite(6, HIGH);
+    //output Vcc
+    pinMode(4,OUTPUT);
+    pinMode(5,OUTPUT);
 }
 
 void right(){
